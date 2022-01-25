@@ -13,6 +13,7 @@ export const Login = () => {
 	const handleLogin = () => {
 		try {
 			signInWithEmailAndPassword(loginEmail, loginPassword);
+			navigate('/dashboard');
 		} catch (error) {
 			alert(error);
 		}
@@ -23,7 +24,7 @@ export const Login = () => {
 	};
 	const user = useContext(AuthContext);
 	if (user) {
-		return navigate('/dashboard');
+		navigate('/dashboard');
 	}
 
 	return (
