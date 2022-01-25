@@ -5,7 +5,7 @@ export const AuthContext = React.createContext();
 
 export const Auth = ({ children }) => {
 	const [ loading, setLoading ] = useState(true);
-	const [ currentUser, setCurrentUser ] = useState(null);
+	const [ user, setCurrentUser ] = useState(null);
 	useEffect(() => {
 		onAuthStateChanged((user) => {
 			setCurrentUser(user);
@@ -15,5 +15,5 @@ export const Auth = ({ children }) => {
 	if (loading) {
 		return <p>Loading...</p>;
 	}
-	return <AuthContext.Provider value={{ currentUser }}>{children}</AuthContext.Provider>;
+	return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 };

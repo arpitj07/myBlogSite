@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Wrapper } from './Blogs.styles';
+import { Container, Wrapper } from './Blogs.styles';
 import { AuthContext } from '../Auth';
 
 //Firebase Dependensies
@@ -14,46 +14,57 @@ export const CreateBlogs = () => {
 
 	const postCollection = collection(db, 'BlogPosts');
 	const navigate = useNavigate();
+	const user = useContext(AuthContext);
 
 	const submitpost = async () => {
 		await addDoc(postCollection, { title, textArea, author: {} });
 		navigate('/dashboard');
 	};
 
-	const { user } = useContext(AuthContext);
+	// useEffect(() => {
+	// 	if (!user) {
+	// 		navigate('/login');
+	// 	}
+	// }, []);
+
 	if (!user) {
-		return navigate('/login');
+		navigate('/login');
 	}
+
 	return (
 		<React.Fragment>
 			<Wrapper>
-				<div className="title">
-					<label htmlFor="Title">Title:</label>
-					<input
-						type="text"
-						name="Title"
-						onChange={(e) => {
-							setTitle(e.target.value);
-						}}
-					/>
-				</div>
+				<Container>
+					<h1>Welcome</h1>
+					<p>Create New Blog.</p>
+					<div className="title">
+						<label htmlFor="Title">Title:</label>
+						<input
+							type="text"
+							name="Title"
+							onChange={(e) => {
+								setTitle(e.target.value);
+							}}
+						/>
+					</div>
 
-				<div className="textarea">
-					<label htmlFor="blog">Blog:</label>
-					<textArea
-						onChange={(e) => {
-							setTextArea(e.target.value);
-						}}
-					/>
-				</div>
+					<div className="textarea">
+						<label htmlFor="blog">Blog:</label>
+						<textarea
+							onChange={(e) => {
+								setTextArea(e.target.value);
+							}}
+						/>
+					</div>
 
-				<button
-					onClick={() => {
-						submitpost();
-					}}
-				>
-					Submit
-				</button>
+					<button
+						onClick={() => {
+							submitpost();
+						}}
+					>
+						Submit
+					</button>
+				</Container>
 			</Wrapper>
 		</React.Fragment>
 	);
