@@ -3,7 +3,7 @@ import React from 'react';
 import { Wrapper, Container } from './Register.styles';
 import { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 //Firebase Dependensies
 import { collection, addDoc } from 'firebase/firestore';
@@ -12,22 +12,25 @@ import { db, auth } from '../../firebase-config';
 export const Register = () => {
 	const [ registerEmail, setRegisterEmail ] = useState('');
 	const [ registerPassword, setRegisterPassword ] = useState('');
+	const [ user, setUser ] = useState(null);
 	const [ phoneNum, setPhoneNum ] = useState('');
 	const [ FullName, setFullName ] = useState('');
 
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 	const postCollection = collection(db, 'UserData');
 
 	const regDetails = async () => {
 		try {
-			const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
+			await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
 			await addDoc(postCollection, { username: FullName, email: registerEmail });
-			console.log(user);
-			navigate('/login');
+			setUser(true);
 		} catch (error) {
 			console.log(error.message);
 		}
 	};
+	if (user) {
+		// navigate('/dashboard');
+	}
 
 	return (
 		<React.Fragment>

@@ -30,7 +30,7 @@ export const Container = styled.div`
 		width: 290px;
 		height: 30px;
 		margin-top: 10px;
-		background-color: #1aa3f2;
+		background-color: black;
 		border-radius: 20px;
 		border: none;
 		color: white;
@@ -46,7 +46,7 @@ export const Container = styled.div`
 		}
 		button {
 			width: 70px;
-			background-color: #1aa3f2;
+			background-color: black;
 		}
 	}
 `;

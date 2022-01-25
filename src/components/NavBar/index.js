@@ -1,30 +1,26 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Nav, StyleLink } from './NavBar.styles';
-import { useNavigate } from 'react-router-dom';
 
+import { Nav, StyleLink } from './NavBar.styles';
+import { useNavigate, Link } from 'react-router-dom';
+import { AuthContext } from '../Auth';
 //firebase
 import { getDoc, collection } from 'firebase/firestore';
 import { db } from '../../firebase-config';
-//Contexts
-import { LogContext } from '../Login';
 
 export const Navbar = () => {
 	const UserCollection = collection(db, 'UserData');
-	const [ user, setUser ] = useState('');
-	const isLogin = useContext(LogContext);
 	const navigate = useNavigate();
 
-	useEffect(() => {
-		const getUserData = async () => {
-			const data = await getDoc(UserCollection);
-			console.log(data);
-		};
-		if (isLogin) {
-			getUserData();
-		}
-	});
-
+	// useEffect(() => {
+	// 	const getUserData = async () => {
+	// 		const data = await getDoc(UserCollection);
+	// 		console.log(data);
+	// 	};
+	// 	if (isLogin) {
+	// 		getUserData();
+	// 	}
+	// });
+	const user = useContext(AuthContext);
 	const signUserOut = () => {
 		navigate('/');
 	};
@@ -33,14 +29,14 @@ export const Navbar = () => {
 		<React.Fragment>
 			<Nav>
 				<h2>myBlog</h2>
-				<StyleLink>
+				<div className="navlinks">
 					<Link to="/">Home</Link>
-					{isLogin ? <span>Arpit</span> : null}
-					{!isLogin ? (
+					{user ? <span>Arpit</span> : null}
+					{!user ? (
 						<Link to="/login">Login</Link>
 					) : (
 						<React.Fragment>
-							<Link to="/blogposts">Create Post</Link>
+							<Link to="/dashboard">Create Post</Link>
 							<button
 								onClick={() => {
 									signUserOut();
@@ -50,7 +46,7 @@ export const Navbar = () => {
 							</button>
 						</React.Fragment>
 					)}
-				</StyleLink>
+				</div>
 			</Nav>
 		</React.Fragment>
 	);

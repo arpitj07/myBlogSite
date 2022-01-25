@@ -1,31 +1,28 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 //Styled Components
-import { Wrapper, Image, Button } from './HomePage.styles';
-import { Register } from '../Register';
-import { Navbar } from '../NavBar';
-import { useNavigate } from 'react-router-dom';
-//Assets
-import HomeImage from '../../assets/images/HomeBackground.jpg';
+import { Container, Wrapper } from './HomePage.styles';
+import { useNavigate, Link } from 'react-router-dom';
+import { AuthContext } from '../Auth';
 
 export const HomePage = () => {
 	const navigate = useNavigate();
+	const user = useContext(AuthContext);
 
-	const redirectToRegister = () => {
-		navigate('/register');
-	};
 	return (
 		<React.Fragment>
 			<Wrapper>
-				<h1>Welcome to myBlog</h1>
-				<Image src={HomeImage} />
-				<button
-					onClick={() => {
-						redirectToRegister();
-					}}
-				>
-					Register
-				</button>
+				<Container>
+					{user ? (
+						<h1>
+							You are logged - <Link to="/dashboard">View Dashboard</Link>
+						</h1>
+					) : (
+						<h1>
+							<Link to="/login">Log In</Link> or <Link to="/register">Sign Up</Link>
+						</h1>
+					)}
+				</Container>
 			</Wrapper>
 		</React.Fragment>
 	);
