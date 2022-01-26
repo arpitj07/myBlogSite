@@ -1,28 +1,25 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState } from 'react';
 
-import { Nav, StyleLink } from './NavBar.styles';
-import { useNavigate, Link } from 'react-router-dom';
-import { AuthContext } from '../Auth';
-//firebase
-import { getDoc, collection } from 'firebase/firestore';
-import { db } from '../../firebase-config';
+import { Nav, StyleLink, Button } from './NavBar.styles';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Auth';
 
 export const Navbar = () => {
-	const UserCollection = collection(db, 'UserData');
+	const [ error, setError ] = useState('');
+
 	const navigate = useNavigate();
 
-	// useEffect(() => {
-	// 	const getUserData = async () => {
-	// 		const data = await getDoc(UserCollection);
-	// 		console.log(data);
-	// 	};
-	// 	if (isLogin) {
-	// 		getUserData();
-	// 	}
-	// });
-	const user = useContext(AuthContext);
-	const signUserOut = () => {
-		navigate('/');
+	const { currentUser, signout } = useAuth();
+
+	const signUserOut = async (e) => {
+		e.preventDefault();
+		try {
+			setError('');
+			await signout();
+			navigate('/');
+		} catch (error) {
+			setError('Failed to Log Out');
+		}
 	};
 
 	return (
@@ -30,20 +27,20 @@ export const Navbar = () => {
 			<Nav>
 				<h2>myBlog</h2>
 				<div className="navlinks">
-					<Link to="/">Home</Link>
-					{user ? <span>Arpit</span> : null}
-					{!user ? (
-						<Link to="/login">Login</Link>
+					<StyleLink to="/">Home</StyleLink>
+					{currentUser ? <span>{currentUser.displayName}</span> : null}
+					{!currentUser ? (
+						<StyleLink to="/login">Login</StyleLink>
 					) : (
 						<React.Fragment>
-							<Link to="/dashboard">Create Post</Link>
-							<button
-								onClick={() => {
-									signUserOut();
+							<StyleLink to="/createposts">Create Post</StyleLink>
+							<Button
+								onClick={(e) => {
+									signUserOut(e);
 								}}
 							>
 								Log Out
-							</button>
+							</Button>
 						</React.Fragment>
 					)}
 				</div>

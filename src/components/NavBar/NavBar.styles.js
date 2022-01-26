@@ -14,9 +14,18 @@ export const Nav = styled.div`
 	h2 {
 		margin: 0 80px;
 	}
+`;
 
-	.navlinks {
-		display: flex;
-		justify-content: space-between;
-	}
+export const StyleLink = styled(Link)`
+	color: white;
+	text-decoration: none;
+	margin: 0 20px;
+
+`;
+
+export const Button = styled.button`
+	color: red;
+	margin-right: 40px;
+	background: transparent;
+	border: none;
 `;
