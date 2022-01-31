@@ -1,7 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Wrapper } from './Blogs.styles';
-import { AuthContext } from '../Auth';
+import { useAuth } from '../Auth';
 
 //Firebase Dependensies
 import { collection, addDoc } from 'firebase/firestore';
@@ -11,25 +11,25 @@ export const CreateBlogs = () => {
 	//useState Hooks
 	const [ title, setTitle ] = useState('');
 	const [ textArea, setTextArea ] = useState('');
+	const { currentUser } = useAuth();
 
 	const postCollection = collection(db, 'BlogPosts');
 	const navigate = useNavigate();
-	const user = useContext(AuthContext);
 
 	const submitpost = async () => {
-		await addDoc(postCollection, { title, textArea, author: {} });
-		navigate('/dashboard');
+		await addDoc(postCollection, {
+			Title: title,
+			Blog: textArea,
+			author: { name: currentUser.displayName, id: currentUser.uid }
+		});
+		navigate('/');
 	};
 
-	// useEffect(() => {
-	// 	if (!user) {
-	// 		navigate('/login');
-	// 	}
-	// }, []);
-
-	if (!user) {
-		navigate('/login');
-	}
+	useEffect(() => {
+		if (!currentUser) {
+			navigate('/login');
+		}
+	}, []);
 
 	return (
 		<React.Fragment>
@@ -38,10 +38,10 @@ export const CreateBlogs = () => {
 					<h1>Welcome</h1>
 					<p>Create New Blog.</p>
 					<div className="title">
-						<label htmlFor="Title">Title:</label>
 						<input
 							type="text"
 							name="Title"
+							placeholder="Enter title"
 							onChange={(e) => {
 								setTitle(e.target.value);
 							}}
@@ -49,8 +49,8 @@ export const CreateBlogs = () => {
 					</div>
 
 					<div className="textarea">
-						<label htmlFor="blog">Blog:</label>
 						<textarea
+							placeholder="Create Your Blog"
 							onChange={(e) => {
 								setTextArea(e.target.value);
 							}}

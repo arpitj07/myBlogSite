@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 
-import { Nav, StyleLink, Button } from './NavBar.styles';
-import { useNavigate } from 'react-router-dom';
+import { Button } from './NavBar.styles';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../Auth';
 
-export const Navbar = () => {
+import { Navbar, Nav, Container } from 'react-bootstrap';
+
+export const NavBar = () => {
 	const [ error, setError ] = useState('');
-
 	const navigate = useNavigate();
-
 	const { currentUser, signout } = useAuth();
 
 	const signUserOut = async (e) => {
@@ -24,27 +24,39 @@ export const Navbar = () => {
 
 	return (
 		<React.Fragment>
-			<Nav>
-				<h2>myBlog</h2>
-				<div className="navlinks">
-					<StyleLink to="/">Home</StyleLink>
-					{currentUser ? <span>{currentUser.displayName}</span> : null}
-					{!currentUser ? (
-						<StyleLink to="/login">Login</StyleLink>
-					) : (
-						<React.Fragment>
-							<StyleLink to="/createposts">Create Post</StyleLink>
-							<Button
-								onClick={(e) => {
-									signUserOut(e);
-								}}
-							>
-								Log Out
-							</Button>
-						</React.Fragment>
-					)}
-				</div>
-			</Nav>
+			<Navbar bg="black" variant="dark" expand="md">
+				<Container>
+					<Navbar.Brand>myBlog</Navbar.Brand>
+					<Navbar.Toggle aria-controls="basic-navbar-nav" />
+					<Navbar.Collapse>
+						<Nav className="ms-auto">
+							<Nav.Link as={Link} to="/">
+								Home
+							</Nav.Link>
+							{currentUser ? <Nav.Link>{currentUser.displayName}</Nav.Link> : null}
+							{!currentUser ? (
+								<Nav.Link as={Link} to="/login">
+									Login
+								</Nav.Link>
+							) : (
+								<React.Fragment>
+									<Nav.Link as={Link} to="/createposts">
+										CreatePost
+									</Nav.Link>
+
+									<Button
+										onClick={(e) => {
+											signUserOut(e);
+										}}
+									>
+										Log Out
+									</Button>
+								</React.Fragment>
+							)}
+						</Nav>
+					</Navbar.Collapse>
+				</Container>
+			</Navbar>
 		</React.Fragment>
 	);
 };
