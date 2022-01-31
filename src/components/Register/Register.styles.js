@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
 
 export const Container = styled.div`
 	width: 500px;
-	height: 400px;
+	height: 500px;
 	display: flex;
 	padding: 30px 20px;
 	align-items: center;
