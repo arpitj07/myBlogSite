@@ -1,0 +1,40 @@
+import React, { useState } from 'react';
+import '../../index.css';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons';
+
+export const LikeButton = () => {
+	const [ active, setActive ] = useState(false);
+	const [ counter, setCounter ] = useState(0);
+
+	const handleToggle = (e) => {
+		e.preventDefault();
+
+		setActive((previousLike) => {
+			return !previousLike;
+		});
+	};
+	return (
+		<React.Fragment>
+			{!active ? (
+				<FontAwesomeIcon
+					icon={farHeart}
+					onClick={(e) => {
+						handleToggle(e);
+					}}
+				/>
+			) : (
+				<FontAwesomeIcon
+					className="text-red"
+					icon={faHeart}
+					onClick={(e) => {
+						handleToggle(e);
+					}}
+				/>
+			)}
+			<span className="m-2">{counter}</span>
+		</React.Fragment>
+	);
+};

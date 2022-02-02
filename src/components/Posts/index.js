@@ -1,13 +1,16 @@
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Card, Col } from 'react-bootstrap';
+import React, { useState, useEffect, useRef } from 'react';
+import { Container, Row, Card, Col, Form, Button } from 'react-bootstrap';
 import { db } from '../../firebase-config';
 import { useAuth } from '../Auth';
+import { LikeButton } from '../Like';
 
 export const Posts = () => {
 	const [ postBlogs, setPostBlogs ] = useState([]);
+
 	const getPostCollections = collection(db, 'BlogPosts');
 	const { currentUser } = useAuth();
+	const inputRef = useRef();
 
 	useEffect(
 		() => {
@@ -35,12 +38,13 @@ export const Posts = () => {
 								<Card.Body>
 									<Row className="">
 										<Col>
-											<Card.Title className="d-flex align-items-center justify-content-between">
+											<Card.Title className="d-flex  align-items-center justify-content-between">
 												<u>{post.Title}</u>
+
 												{currentUser &&
 												post.author.id === currentUser.uid && (
 													<button
-														class="btn btn-md"
+														className="btn btn-md"
 														onClick={() => {
 															deletePost(post.id);
 														}}
@@ -56,6 +60,22 @@ export const Posts = () => {
 										Author: @{post.author.name}
 									</Card.Subtitle>
 									<Card.Text className="p4">{post.Blog}</Card.Text>
+
+									<LikeButton className="my-2" />
+
+									<Form>
+										<Form.Control
+											type="textarea"
+											name="Comment"
+											placeholder="Write Comment"
+											ref={inputRef}
+										/>
+									</Form>
+									{document.activeElement === inputRef.current && (
+										<Button bg="dark" variant="dark">
+											Post
+										</Button>
+									)}
 								</Card.Body>
 							</Card>
 						</Row>
