@@ -1,16 +1,19 @@
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Row, Card, Col, Form, Button } from 'react-bootstrap';
 import { db } from '../../firebase-config';
 import { useAuth } from '../Auth';
 import { LikeButton } from '../Like';
+import '../../index.css';
+import { Comments } from '../Comment';
 
 export const Posts = () => {
+	//Hooks
 	const [ postBlogs, setPostBlogs ] = useState([]);
 
+	//Firebase
 	const getPostCollections = collection(db, 'BlogPosts');
 	const { currentUser } = useAuth();
-	const inputRef = useRef();
 
 	useEffect(
 		() => {
@@ -60,23 +63,9 @@ export const Posts = () => {
 										Author: @{post.author.name}
 									</Card.Subtitle>
 									<Card.Text className="p4">{post.Blog}</Card.Text>
-
-									<LikeButton className="my-2" />
-
-									<Form>
-										<Form.Control
-											type="textarea"
-											name="Comment"
-											placeholder="Write Comment"
-											ref={inputRef}
-										/>
-									</Form>
-									{document.activeElement === inputRef.current && (
-										<Button bg="dark" variant="dark">
-											Post
-										</Button>
-									)}
 								</Card.Body>
+								<LikeButton className="my-2" />
+								<Comments />
 							</Card>
 						</Row>
 					);

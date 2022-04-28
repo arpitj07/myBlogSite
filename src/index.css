@@ -1,3 +1,25 @@
 .text-red {
 	color: var(--bs-red);
 }
+
+/* .comment:focus + button.commentButton {
+	visibility: visible;
+}
+
+button.commentButton {
+	visibility: hidden;
+} */
+
+.btn-postcomment {
+	animation: appear 1s;
+}
+@keyframes appear {
+	from {
+		opacity: 0;
+		translateX: (-20px);
+	}
+	to {
+		opacity: 1;
+		translateX: (20px);
+	}
+}
