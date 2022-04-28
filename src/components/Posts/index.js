@@ -62,7 +62,9 @@ export const Posts = () => {
 									<Card.Subtitle className="mt-3 mb-3 text-muted">
 										Author: @{post.author.name}
 									</Card.Subtitle>
-									<Card.Text className="p4">{post.Blog}</Card.Text>
+									<Card.Text className="p4" style={{ background: '#e8e8e4', padding: '20px' }}>
+										{post.Blog}
+									</Card.Text>
 								</Card.Body>
 								<LikeButton className="my-2" />
 								<Comments />
